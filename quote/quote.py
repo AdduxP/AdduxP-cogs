@@ -1,0 +1,72 @@
+from discord.ext import commands
+from random import choice
+from cogs.utils.chat_formatting import box
+import aiohttp
+import html
+import re
+import urllib
+
+
+class Quote:
+    """A 15-minute call could save you 15 percent (or more) on car insurance."""
+    def __init__(self, bot):
+        self.bot = bot
+
+    @commands.command(name="bash", pass_context=True, no_pm=True)
+    @commands.cooldown(3, 60, commands.BucketType.user)
+    async def _bash(self, ctx, num: int=1):
+        """Retrieves a quote from bash.org. num can be specified for number of quotes. Max is 5."""
+        regex = ["<p class=\"qt\">([^`]*?)<\/p>", "<br \/>"]
+        if num > 5:
+            num = 5
+            await self.bot.reply("Chill, I can only handle 5 quotes at a time!")
+        for i in range(num):
+            async with aiohttp.get('http://bash.org/?random') as resp:
+                test = str(await resp.text())
+                subs = re.findall(regex[0], test)
+                brsub = re.sub(regex[1], "", subs[0])
+                subs2 = html.unescape(brsub)
+                await self.bot.say(box(subs2))
+
+    @commands.command(name="quotes", pass_context=True, no_pm=True)
+    @commands.cooldown(3, 60, commands.BucketType.user)
+    async def _quotes(self, ctx, *, author: str):
+        """Retrieves a specified number of quotes from a specified author. Max number of quotes at a time is 5.
+        Examples:
+        [p]quotes Mark Twain; 4"""
+        regex = [" <a href=\"\/quotes\/authors\/([^`]*?).html\">", "title=\"view quote\">([^`]*?)<\/a>",
+                 "<h1 class=\"pull-left quoteListH1\" style=\"padding-right:20px\">([^`]*?) Quotes", "&#39;"]
+        option = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1'}
+        try:
+            author = author.split('; ')
+            title = author[0]
+            number = int(author[1])
+            if number > 5:
+                number = 5
+                await self.bot.reply("Chill, I can only handle 5 quotes at a time!")
+            uri = 'http://www.brainyquote.com/search_results.html?q='
+            quary = title.lower()
+            encode = urllib.parse.quote_plus(quary, encoding='utf-8', errors='replace')
+            uir = uri + encode
+            async with aiohttp.get(uir, headers=option) as resp:
+                test = str(await resp.text())
+                author_find = re.findall(regex[0], test)
+                author_url = 'http://www.brainyquote.com/quotes/authors/' + author_find[0]
+                for i in range(number):
+                    async with aiohttp.get(author_url) as resp:
+                        test = str(await resp.text())
+                        quote_find = re.findall(regex[1], test)
+                        random_quote = choice(quote_find)
+                        name_find = re.findall(regex[2], test)
+                        while random_quote == name_find[0]:
+                            random_quote = choice(quote_find)
+                        await self.bot.say(box(random_quote))
+
+        except IndexError:
+            await self.bot.say("Your search is not valid, please follow this example:\n"
+                               "[p]quotes Mark Twain; 5")
+
+
+def setup(bot):
+    n = Quote(bot)
+    bot.add_cog(n)

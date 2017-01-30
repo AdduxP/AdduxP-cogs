@@ -11,3 +11,5 @@ To be used with the in-bot downloader by adding it with:
 
 ###remindme
 `!remindme <quantity> <time_unit> <text>` sends you `<text>` when the time is up.
+
+And then some others that I can't be bothered with right now.
