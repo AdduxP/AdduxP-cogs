@@ -1,0 +1,10 @@
+{
+    "AUTHOR" : "AdduxP",
+    "SHORT" : "Talk with Oberon!",
+    "DESCRIPTION" : "Allows for chatting through mention/command\nRequirement:\npip3 install cleverbot",
+    "DISABLED" : false,
+    "NAME" : "Chat",
+    "REQUIREMENTS" : ["cleverbot"],
+    "TAGS" : ["chatbot", "cleverbot", "conversation"],
+    "INSTALL_MSG" : "`[p]chat <text>` to talk with cleverbot.\n`@Mention <text>` works too.\n`[p]chat toggle` disables replies by mention."
+}
