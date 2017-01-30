@@ -16,9 +16,8 @@ class Strawpoll:
     @commands.command(name="strawpoll", pass_context=True, no_pm=True)
     async def _strawpoll(self, ctx, *, question, options=None):
         """Makes a poll based on questions and choices or options. must be split with "; "
-            Examples:
-            [p]strawpoll Oberon is smart; Oberon is cute; Oberon is funny
-            [p]strawpoll Oberon; Loki; Excalibur; Titania; Nekros"""
+            Example:
+            [p]strawpoll Who is the best?; Oberon; Titania; Loki"""
         options_list = question.split('; ')
         title = options_list[0]
         options_list.remove(title)
