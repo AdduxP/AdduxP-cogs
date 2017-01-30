@@ -79,5 +79,5 @@ def setup(bot):
                            "Then [p]load cleverbot")
     check_folders()
     check_files()
-    n = Cleverbot(bot)
+    n = Chat(bot)
     bot.add_cog(n)
