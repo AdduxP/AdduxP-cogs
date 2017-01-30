@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "AdduxP",
+    "DESCRIPTION" : "Create a strawpoll and change the various options allowed.\nSee [p]strawpoll's help.",
+    "SHORT" : "Create a Strawpoll",
+    "DISABLED" : false,
+    "NAME" : "Strawpoll"
+}

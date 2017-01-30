@@ -5,6 +5,5 @@
     "DISABLED" : false,
     "NAME" : "Chat",
     "REQUIREMENTS" : ["cleverbot"],
-    "TAGS" : ["chatbot", "cleverbot", "conversation"],
     "INSTALL_MSG" : "`[p]chat <text>` to talk with cleverbot.\n`@Mention <text>` works too.\n`[p]chat toggle` disables replies by mention."
 }

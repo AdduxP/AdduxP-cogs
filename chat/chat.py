@@ -21,7 +21,7 @@ class Chat():
 
     @commands.group(no_pm=True, invoke_without_command=True)
     async def chat(self, *, message):
-        """Talk with cleverbot"""
+        """Talk with me! It gets a bit lonely sometimes, being a bot..."""
         result = await self.get_response(message)
         await self.bot.say(result)
 
