@@ -383,3 +383,15 @@ def get_deal_string():
         raise RuntimeError('Empty response from ' + url)
 
     return [Deal(d) for d in deal_data][0]
+
+
+
+
+
+
+
+
+
+
+
+    
