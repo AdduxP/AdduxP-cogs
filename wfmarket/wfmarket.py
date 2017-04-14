@@ -29,10 +29,15 @@ class Wfmarket:
         lowest_price = lowest.price
         lowest_seller = lowest.ign
 
-        reply = "*Average Price*: **{}p** from *{}* online offers \n*Lowest Available Price*: **{}p** from *{}*".format(avg_price,
-                                                    avg_num_offers, lowest_price, lowest_seller)
+        reply = "*Average Price*: **{}p** from *{}* online offers\n*Lowest Available Price*: **{}p** from *{}*".format(avg_price, avg_num_offers, lowest_price, lowest_seller)
+        
+        
         await self.bot.say(reply)
 
+    @commands.command(pass_context=True, name="getsellers", aliases=["wtb"])
+    async def getsellers(self, context, *, item: str):
+        """Search for online sellers of an item"""
+        await self.bot.say(get_all_sellers(item))
 
 class Itemlist():
     def __init__(self, data):
@@ -156,6 +161,24 @@ def get_average_offer(item):
     avg_price = "{0:.1f}".format(float(sum(prices)) / max(len(prices), 1))
     num_offers = len(online_orders)
     return [avg_price, num_offers]
+
+def get_all_sellers(item):
+    reply = ""
+    try:
+        reply = "Here's what I found:\n"
+        orderlist = sorted(get_orders(item), key=(lambda x: x.price))
+        counter = 0
+        for order in orderlist:
+            if counter >= 10:
+                reply += "*(Showing first 10 results)*"
+                break
+            neworder = order.ign + ": " + str(order.price) + "p\n"
+            reply += neworder
+            counter += 1
+    except AssertionError:
+        reply = "Couldn't find any listings for " + item +", have you checked the spelling?"
+
+    return reply
 
 
 def setup(bot):

@@ -2,6 +2,12 @@ import discord
 from discord.ext import commands
 from datetime import datetime
 import requests
+try: # check if BeautifulSoup4 is installed
+    from bs4 import BeautifulSoup
+    soupAvailable = True
+except:
+    soupAvailable = False
+import aiohttp
 
 class Warframe:
     """A bunch of Warframe-related cogs!"""
@@ -9,29 +15,46 @@ class Warframe:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="wfnews")
+    @commands.command(name="news", aliases=["wfnews"])
     async def news(self):
         """Get the latest in Warframe news!"""
         await self.bot.say(get_condensed_news_string())
 
-    @commands.command(name="wfinvasion")
+    @commands.command(name="invasion", aliases=["wfinvasion"])
     async def invasion(self):
         """Who's trying to conquer who this time?"""
         await self.bot.say(get_invasion_string())
     
-    @commands.command(name="wffissures")
+    @commands.command(name="fissures", aliases=["wffissures, fissure"])
     async def fissures(self):
         """Fetch void fissure missions!"""
         await self.bot.say(get_fissure_string())
         
-    @commands.command(name="wfdeals")
+    @commands.command(name="deals", aliases=["wfdeals, deal"])
     async def deals(self):
         """Check out Darvo's daily deal!"""
         deals = get_deal_string().__str__()
         await self.bot.say("Here's what Darvo's got today:\n" + deals)
+
+    @commands.command(name="earth", aliases=["earthcycle, ec"])
+    async def earthcycle(self):
+        """Check the time on Earth"""
+        url = "https://deathsnacks.com/wf/" #build the web address
+        async with aiohttp.get(url) as response:
+            earthObj = BeautifulSoup(await response.text(), "html.parser")
+        try:
+            daynight = earthObj.find(id_='daynight').get_text()
+            timeleft = earthObj.find(id_='daynight-timeleft').get_text()
+            await self.bot.say("It is currently **" + daynight + "on Earth. (" + timeleft + " remaining)")
+        except:
+            await self.bot.say("Something went wrong and I couldn't fetch the Earth cycle.")
         
 def setup(bot):
-    bot.add_cog(Warframe(bot))
+    if soupAvailable:
+        print(soupAvailable)
+        bot.add_cog(Warframe(bot))
+    else:
+        raise RuntimeError("You need to run `pip3 install beautifulsoup4`")
 
 #### Helper Functions for NEWS ####
 
