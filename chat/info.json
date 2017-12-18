@@ -1,6 +1,6 @@
 {
-    "AUTHOR" : "AdduxP",
-    "SHORT" : "Talk with Oberon!",
+    "AUTHOR" : "chromadrive",
+    "SHORT" : "Talk with Touen!",
     "DESCRIPTION" : "Allows for chatting through mention/command\nRequirement:\npip3 install cleverbot",
     "DISABLED" : false,
     "NAME" : "Chat",

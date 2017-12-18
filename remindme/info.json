@@ -1,5 +1,5 @@
 {
-    "AUTHOR" : "AdduxP",
+    "AUTHOR" : "chromadrive",
     "DESCRIPTION" : "Sends you the message you want when the time is up.\nSee [p]help RemindMe\nExample: !remindme 3 days Treat Oberon to a nice dinner",
     "SHORT" : "Never forget anything anymore",
     "DISABLED" : false,
